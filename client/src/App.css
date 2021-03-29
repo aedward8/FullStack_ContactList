@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.form {
+  width: 75%;
+  padding-left: 25%;
+}
+
+.contactList {
+  background-image: url("https://image.shutterstock.com/image-photo/yellow-pages-search-600w-47871322.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.7;
+  color: black;
+  height: auto;
+}

@@ -12,7 +12,6 @@ function App() {
   //API get all contacts call
   const loadContacts = async () => {
     setContacts(await apiClient.getContacts());
-    console.log("app");
   };
 
   useEffect(() => {
@@ -23,24 +22,70 @@ function App() {
 
   return (
     <div className="App">
-      <ContactList contacts={contacts} loadContacts={loadContacts} />
+      <ContactList
+        contacts={contacts}
+        loadContacts={loadContacts}
+        setContacts={setContacts}
+      />
       <AddContact loadContacts={loadContacts} />
     </div>
   );
 }
 
 function ContactList({ contacts, loadContacts }) {
+  const [searchLastName, setSearchLastName] = useState("");
   // delete sighting function
   const deleteContact = async (id) => {
     // create a delete fetch request
     //await apiClient.deleteContact(id);
     loadContacts();
   };
+
+  // const searchContact = (last_name) => {
+  //   // loadContacts();
+  //   let filteredContacts = contacts.filter(
+  //     (contact) => contact.last_name === last_name
+  //   );
+  //   //setContacts(filteredContacts);
+  //   //loadContacts();
+  // };
+
+  // const filteredContacts = contacts.filter((contact) => {
+  //   // if we have a search term
+  //   if (searchLastName.length > 0) {
+  //     return contact.last_name.startsWith(searchLastName);
+  //   }
+  //   return true;
+  // });
+
+  let filteredContacts;
+  if (searchLastName.length > 0) {
+    filteredContacts = contacts.filter((contact) => {
+      return contact.last_name.startsWith(searchLastName);
+    });
+  } else {
+    filteredContacts = contacts;
+  }
+
   return (
     <>
+      <div className="search">
+        <h1>Search By Last Name</h1>
+        <form>
+          <label>Last Name</label>
+          {"  "}
+          <input
+            type="text"
+            value={searchLastName}
+            onChange={(e) => {
+              setSearchLastName(e.target.value);
+            }}
+          />
+        </form>
+      </div>
       <div className="contactList">
         <h1>View all our Contacts</h1>
-        <table className="table table-bordered">
+        <table className="table table-bordered hover">
           <thead>
             <tr>
               <th>Contact ID</th>
@@ -52,7 +97,7 @@ function ContactList({ contacts, loadContacts }) {
             </tr>
           </thead>
           <tbody>
-            {contacts.map(
+            {filteredContacts.map(
               ({ id, first_name, last_name, phone_number, email }) => (
                 <tr key={id}>
                   <td>{id}</td>

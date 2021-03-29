@@ -40,6 +40,23 @@ app.get("/contacts", async (req, res) => {
   }
 });
 
+// Create a New Contact
+app.post("/contacts", async (req, res) => {
+  try {
+    const { first_name, last_name, phone_number, email } = req.body;
+    const newSight = await db.addContact(
+      first_name,
+      last_name,
+      phone_number,
+      email
+    );
+    // turn JS to JSON
+    res.status(201).json(newSight);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
